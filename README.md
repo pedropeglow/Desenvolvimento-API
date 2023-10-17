@@ -19,6 +19,66 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [JavaScript]
 - [Vercel - Deploy]
 
+## Documentação da API
+
+#### Retorna todos os livros
+
+```http
+  GET /livros
+```
+
+#### Retorna um item
+
+```http
+  GET /livros/${id}
+```
+
+| Parâmetro | Tipo     | Descrição                                   |
+| :-------- | :------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. O ID do item que você quer |
+
+#### Inserir um livro
+
+```http
+  POST /livros/
+```
+
+| Body |
+| :--- |
+
+| `{
+    "nome": "Nome Livro Teste",
+    "autor": 1,
+    "editora": "Editora teste",
+    "anoPublicacao": "20/11/2020"
+}`
+
+#### Deletar um livro
+
+```http
+  DELETE /livros/${id}
+```
+
+| Parâmetro | Tipo     | Descrição                                   |
+| :-------- | :------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. O ID do item que você quer |
+
+#### Atualizar um livro
+
+```http
+  PUT /livros/${id}
+```
+
+| Body |
+| :--- |
+
+| `{
+    "nome": "Nome Livro Teste MUDADO",
+    "autor": 1,
+    "editora": "Editora teste",
+    "anoPublicacao": "20/11/2020"
+}`
+
 ### Autor
 
 ---
