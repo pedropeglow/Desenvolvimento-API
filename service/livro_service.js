@@ -1,11 +1,11 @@
 const livroRepository = require("../repository/livro_repository");
 const autorRepository = require("../repository/autor_repository");
 
-function listar() {
-  return livroRepository.listar();
+async function listar() {
+  return await livroRepository.listar();
 }
 
-function inserir(livro) {
+async function inserir(livro) {
   if (
     livro &&
     livro.nome &&
@@ -13,10 +13,10 @@ function inserir(livro) {
     livro.editora &&
     livro.anoPublicacao
   ) {
-    const autorEncontrado = autorRepository.buscarAutorPorId(livro.autor);
-    if (autorEncontrado) {
+    const autorEncontrado = await autorRepository.buscarAutorPorId(livro.autor);
+    if (autorEncontrado && autorEncontrado.length > 0) {
       livro.autor = autorEncontrado;
-      livroRepository.inserir(livro);
+      await livroRepository.inserir(livro);
     } else {
       throw { id: 404, message: "Autor não encontrado!" };
     }
@@ -29,18 +29,18 @@ function inserir(livro) {
   }
 }
 
-function buscarPorId(id) {
-  const livro = livroRepository.buscarPorId(id);
-  if (livro) {
+async function buscarPorId(id) {
+  const livro = await livroRepository.buscarPorId(id);
+  if (livro && livro.length > 0) {
     return livro;
   } else {
     throw { id: 404, message: "Livro não encontrado" };
   }
 }
 
-function atualizar(id, livro) {
-  const livroEncontrado = livroRepository.buscarPorId(id);
-  if (livroEncontrado) {
+async function atualizar(id, livro) {
+  const livroEncontrado = await livroRepository.buscarPorId(id);
+  if (livroEncontrado && livroEncontrado.length > 0) {
     if (
       livro &&
       livro.nome &&
@@ -48,11 +48,11 @@ function atualizar(id, livro) {
       livro.editora &&
       livro.anoPublicacao
     ) {
-      const autorEncontrado = autorRepository.buscarAutorPorId(livro.autor);
-      if (autorEncontrado) {
+      const autorEncontrado = await autorRepository.buscarAutorPorId(livro.autor);
+      if (autorEncontrado && autorEncontrado.length > 0) {
         livro.autor = autorEncontrado;
         livro.disponivel = livroEncontrado.disponivel;
-        livroRepository.atualizar(id, livro);
+        await livroRepository.atualizar(id, livro);
       } else {
         throw { id: 404, message: "Autor não encontrado!" };
       }
@@ -68,20 +68,20 @@ function atualizar(id, livro) {
   }
 }
 
-function deletar(id) {
-  livro = livroRepository.buscarPorId(id);
-  if (livro) {
-    livroRepository.deletar(id);
+async function deletar(id) {
+  livro = await livroRepository.buscarPorId(id);
+  if (livro && livro.length > 0) {
+    await livroRepository.deletar(id);
   } else {
     throw { id: 404, message: "Livro não encontrado!" };
   }
 }
 
-function pegarLivro(id) {
-  livro = livroRepository.buscarPorId(id);
-  if (livro) {
-    if (livro.disponivel == true) {
-      livroRepository.pegarLivro(id);
+async function pegarLivro(id) {
+  livro = await livroRepository.buscarPorId(id);
+  if (livro && livro.length > 0) {
+    if (livro[0].disponivel == true) {
+      await livroRepository.pegarLivro(id);
     } else {
       throw { id: 400, message: "Livro não está disponível no momento!" };
     }
@@ -90,11 +90,11 @@ function pegarLivro(id) {
   }
 }
 
-function devolverLivro(id) {
-  livro = livroRepository.buscarPorId(id);
-  if (livro) {
-    if (livro.disponivel == false) {
-      livroRepository.devolverLivro(id);
+async function devolverLivro(id) {
+  livro = await livroRepository.buscarPorId(id);
+  if (livro && livro.length > 0) {
+    if (livro[0].disponivel == false) {
+      await livroRepository.devolverLivro(id);
     } else {
       throw {
         id: 400,

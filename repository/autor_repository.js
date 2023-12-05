@@ -1,25 +1,39 @@
-let listaAutores = [
-    {   
-        id: 1,
-        nome: "Carlos"
-    },
-    {
-        id: 2,
-        nome: "José"
-    }
-];
+const {Client} = require('pg');
 
-function buscarAutorPorId(id){
-    return listaAutores.find(function(livro) {
-        return(livro.id == id);        
-    })   
+const conexao = {
+    host: 'localhost',
+    port: 5432,
+    user: 'postgres',
+    password: '123',
+    database: 'crud_biblioteca'
+};
+
+async function buscarAutorPorId(id){
+    const cliente = new Client(conexao);
+    await cliente.connect();
+
+    const sql = `SELECT id_autor, nome_autor FROM autores WHERE id_autor = ${id}`;
+    const result = await cliente.query(sql);
+    await cliente.end();
+    return result.rows;
 }
 
-function listarAutores() {
-    return listaAutores;
+async function deletar(id) {
+    try {
+        const cliente = new Client(conexao);
+        cliente.connect();
+
+        const sql = "DELETE FROM autores WHERE id_autor = $1";
+        const values = [id];
+        res = await cliente.query(sql,values);
+        cliente.end();
+    } catch (error) {
+        return error.code;
+    }
+    
 }
 
 module.exports = {
     buscarAutorPorId,
-    listarAutores
+    deletar
 }

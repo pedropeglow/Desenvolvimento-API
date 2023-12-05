@@ -1,5 +1,6 @@
 const express = require("express");
 const livroRouter = require("./router/livro_router");
+const autorRouter = require("./router/autor_router");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -12,6 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/livros", livroRouter);
+app.use("/autores", autorRouter);
 
 app.listen(port, () => {
   console.log(`Library API listening on port ${port}`);
