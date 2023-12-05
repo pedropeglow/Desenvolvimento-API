@@ -18,3 +18,5 @@ app.use("/autores", autorRouter);
 app.listen(port, () => {
   console.log(`Library API listening on port ${port}`);
 });
+
+module.exports = {app}
